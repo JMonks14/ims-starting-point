@@ -1,0 +1,23 @@
+INSERT INTO Orders(fk_cust_ID)
+VALUES (1);
+
+INSERT INTO order_details(fk_order_ID, fk_item ID, quantity)
+VALUES (value1, value2 ,value3);
+
+UPDATE order_details
+SET total_price=(SELECT quantity FROM order_details WHERE fk_order_ID=value AND fk_item_ID=value2)*(SELECT price FROM Items WHERE item_ID=value2);
+
+UPDATE Orders
+SET total_cost=(SELECT SUM(total_price) from order_details WHERE fk_order_ID=value) WHERE order_ID=value;
+
+SELECT * FROM Orders;
+
+SELECT od.fk_item_ID, i.item_ID, od.quantity, od.total_price from order_details od join Items i on i.item_ID=od.fk_item_ID WHERE od.fk_order_ID=value; 
+
+UPDATE order_details
+SET quantity=value
+where fk_item_ID=value;
+
+DELETE FROM Orders WHERE order_ID=value;
+
+DELETE FROM order_details WHERE fk_item_ID=value;

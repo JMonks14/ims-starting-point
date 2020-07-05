@@ -1,0 +1,10 @@
+CREATE TABLE Customers (
+cust_ID INT NOT NULL AUTO_INCREMENT,
+first_name varchar(40) NOT NULL,
+last_name varchar(40) NOT NULL,
+username varchar(40) NOT NULL,
+password varchar(40) NOT NULL,
+UNIQUE(cust_ID),
+UNIQUE(username),
+PRIMARY KEY(cust_ID)
+);

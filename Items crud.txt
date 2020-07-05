@@ -1,0 +1,10 @@
+INSERT INTO Items (item_name, quant_in_stock, price)
+VALUES ('Bag of Holding', 10, 55.90);
+
+SELECT * FROM Items;
+
+UPDATE Items
+SET item_name=value1, quant_in_stock=value2, price=value3
+where item_ID=value;
+
+DELETE FROM Customers WHERE item_ID=value;

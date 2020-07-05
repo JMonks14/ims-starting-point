@@ -1,0 +1,8 @@
+CREATE TABLE Order_details (
+fk_order_ID INT,
+fk_item_ID INT NOT NULL,
+quantity INT DEFAULT 1,
+total_price DEC(7,2),
+FOREIGN KEY(fk_order_ID) REFERENCES Items (item_ID),
+FOREIGN KEY(fk_order_ID) REFERENCES Orders (order_ID)
+);

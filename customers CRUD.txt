@@ -1,0 +1,10 @@
+INSERT INTO Customers (first_name, last_name, username, password)
+VALUES ('Dave', 'Example', 'superdave', 'iamdave');
+
+SELECT * FROM Customers;
+
+UPDATE Customers
+SET first_name=value1, last_name=value2, username=value3, password=value4
+where cust_ID=value;
+
+DELETE FROM Customers WHERE cust_ID=value;

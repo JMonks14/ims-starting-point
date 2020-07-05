@@ -1,0 +1,8 @@
+CREATE TABLE Orders (
+order_ID INT NOT NULL AUTO_INCREMENT,
+fk_cust_ID INT NOT NULL,
+total_cost DEC(7,2),
+PRIMARY KEY(order_ID),
+FOREIGN KEY(fk_cust_ID) REFERENCES Customers (cust_ID),
+UNIQUE(order_ID)
+);
