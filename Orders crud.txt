@@ -1,23 +1,29 @@
 INSERT INTO Orders(fk_cust_ID)
 VALUES (1);
 
-INSERT INTO order_details(fk_order_ID, fk_item ID, quantity)
+INSERT INTO Order_details(fk_order_ID, fk_item_ID, quantity)
 VALUES (value1, value2 ,value3);
 
-UPDATE order_details
-SET total_price=(SELECT quantity FROM order_details WHERE fk_order_ID=value AND fk_item_ID=value2)*(SELECT price FROM Items WHERE item_ID=value2);
+UPDATE Items SET quant_in_stock=
+quant_in_stock-
+(SELECT quantity FROM Order_details WHERE fk_item_ID=value2 AND fk_order_ID=value1) WHERE item_ID=value2;
 
-UPDATE Orders
-SET total_cost=(SELECT SUM(total_price) from order_details WHERE fk_order_ID=value) WHERE order_ID=value;
+UPDATE Order_details SET total_price=
+quantity*(SELECT price FROM Items WHERE item_ID=value2) WHERE fk_order_ID=value1 AND fk_item_ID=value2;
+
+UPDATE Orders SET total_cost=
+(SELECT SUM(total_price) from Order_details WHERE fk_order_ID=value) WHERE order_ID=value;
 
 SELECT * FROM Orders;
 
-SELECT od.fk_item_ID, i.item_ID, od.quantity, od.total_price from order_details od join Items i on i.item_ID=od.fk_item_ID WHERE od.fk_order_ID=value; 
+SELECT i.item_name, od.quantity, od.total_price 
+FROM Order_details od join Items i on i.item_ID=od.fk_item_ID 
+WHERE od.fk_order_ID=value; 
 
-UPDATE order_details
-SET quantity=value
-where fk_item_ID=value;
+UPDATE Order_details
+SET quantity=value1
+where fk_item_ID=value2 AND fk_order_ID=value3;
 
 DELETE FROM Orders WHERE order_ID=value;
 
-DELETE FROM order_details WHERE fk_item_ID=value;
+DELETE FROM Order_details WHERE fk_item_ID=value;
