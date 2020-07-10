@@ -14,7 +14,7 @@ quantity*(SELECT price FROM Items WHERE item_ID=value2) WHERE fk_order_ID=value1
 UPDATE Orders SET total_cost=
 (SELECT SUM(total_price) from Order_details WHERE fk_order_ID=value) WHERE order_ID=value;
 
-SELECT * FROM Orders;
+SELECT o.order_ID, c.first_name, c.last_name, o.total_cost FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID;
 
 SELECT i.item_name, od.quantity, od.total_price 
 FROM Order_details od join Items i on i.item_ID=od.fk_item_ID 
