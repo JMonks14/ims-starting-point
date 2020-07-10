@@ -35,7 +35,7 @@ public class ItemDoaMysql implements Dao<Item> {
 	Item itemFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("item_ID");
 		String item_name = resultSet.getString("item_name");
-		double price = resultSet.getDouble("item_price");
+		double price = resultSet.getDouble("price");
 		int quant_in_stock = resultSet.getInt("quant_in_stock");
 		return new Item(id, item_name, price, quant_in_stock);
 	}
@@ -118,7 +118,7 @@ public class ItemDoaMysql implements Dao<Item> {
 	public Item update(Item item) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("UPDATE Items SET item_name=" + item.getItem_name() + ", quant_in_stock=" + item.getQuant_in_stock() + 
+			statement.executeUpdate("UPDATE Items SET item_name='" + item.getItem_name() + "', quant_in_stock=" + item.getQuant_in_stock() + 
 					", price=" + item.getItem_price() + " where item_ID=" + item.getItem_ID());
 			return readItem(item.getItem_ID());
 		} catch (Exception e) {

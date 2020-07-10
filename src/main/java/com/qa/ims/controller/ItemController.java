@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.services.CrudServices;
 import com.qa.ims.utils.Utils;
@@ -65,8 +64,8 @@ public static final Logger LOGGER = Logger.getLogger(CustomerController.class);
 		double price = Double.parseDouble(getInput());
 		LOGGER.info("Please enter a stock quantity");
 		int quant_in_stock = Integer.parseInt(getInput());		
-		Item item = itemService.create(new Item(id, name, price, quant_in_stock));
-		LOGGER.info("Customer Updated");
+		Item item = itemService.update(new Item(id, name, price, quant_in_stock));
+		LOGGER.info("Item Updated");
 		return item;
 	}
 
