@@ -19,8 +19,7 @@ SELECT i.item_name, od.quantity, od.total_price
 FROM Order_details od join Items i on i.item_ID=od.fk_item_ID 
 WHERE od.fk_order_ID=value; 
 
-UPDATE Order_details
-SET quantity=value1
+UPDATE Order_details SET quantity=value1
 where fk_item_ID=value2 AND fk_order_ID=value3;
 
 DELETE FROM Orders WHERE order_ID=value;

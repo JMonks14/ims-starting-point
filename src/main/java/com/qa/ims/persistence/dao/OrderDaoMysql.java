@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import com.qa.ims.persistence.domain.Itemline;
 import com.qa.ims.persistence.domain.Order;
+import com.qa.ims.persistence.domain.OrderLine;
 import com.qa.ims.utils.Utils;
 
 public class OrderDaoMysql implements Dao<Order>{
@@ -36,8 +37,18 @@ public class OrderDaoMysql implements Dao<Order>{
 	Order orderFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("order_ID");
 		long cust_id = resultSet.getLong("fk_cust_ID");
+		String custFirstName= resultSet.getString("first_name");
+		String custLastName= resultSet.getString("last_name");		
 		double cost = resultSet.getDouble("total_cost");
-		return new Order(id, cust_id, cost);
+		return new Order(id, cust_id, custFirstName, custLastName, cost);
+	}
+	
+	OrderLine orderLineFromResultSet(ResultSet resultSet) throws SQLException {
+		long itemID = (resultSet.getLong("item_ID"));
+		String itemName = resultSet.getString("item_name");
+		int quantity= resultSet.getInt("quantity");
+		double cost = resultSet.getDouble("total_price");
+		return new OrderLine(itemID, itemName, quantity, cost);
 	}
 
 	/**
@@ -49,12 +60,30 @@ public class OrderDaoMysql implements Dao<Order>{
 	public List<Order> readAll() {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("select * from Orders");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID;");) {
 			ArrayList<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
 				orders.add(orderFromResultSet(resultSet));
 			}
 			return orders;
+		} catch (SQLException e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		return new ArrayList<>();
+	}
+	
+	public List<OrderLine> readAllitems(long orderId) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT i.item_ID, i.item_name, od.quantity, od.total_price " + 
+						"FROM Order_details od join Items i on i.item_ID=od.fk_item_ID " + 
+						"WHERE od.fk_order_ID=" + orderId);) {
+			ArrayList<OrderLine> order = new ArrayList<>();
+			while (resultSet.next()) {
+				order.add(orderLineFromResultSet(resultSet));
+			}
+			return order;
 		} catch (SQLException e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
@@ -130,8 +159,7 @@ public class OrderDaoMysql implements Dao<Order>{
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("INSERT INTO Order_details(fk_order_ID, fk_item_ID, quantity) VALUES(" + itemLine.getID()+ "," + itemLine.getItemID() + ","+ itemLine.getQuantity() + ")");
-			statement.executeUpdate("UPDATE Items SET quant_in_stock=quant_in_stock-" + "(SELECT quantity FROM Order_details WHERE fk_item_ID=" 
-			+ itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID() + ") WHERE item_ID=" + itemLine.getID());
+			statement.executeUpdate("UPDATE Items SET quant_in_stock=quant_in_stock-" + itemLine.getQuantity() +" WHERE item_ID=" + itemLine.getItemID());
 			statement.executeUpdate("UPDATE Order_details SET total_price=" + 
 					"quantity*(SELECT price FROM Items WHERE item_ID=" + itemLine.getItemID() + ") WHERE fk_order_ID=" + itemLine.getID() +  " AND fk_item_ID=" + itemLine.getItemID());
 			statement.executeUpdate("UPDATE Orders SET total_cost=(SELECT SUM(total_price) from Order_details WHERE fk_order_ID=" + itemLine.getID() + ") WHERE order_ID=" + itemLine.getID());
@@ -142,7 +170,31 @@ public class OrderDaoMysql implements Dao<Order>{
 		}
 		return null;
 	}
-	
+	public Itemline changeQuant(Itemline itemLine) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();) {
+			if (itemLine.getQuantity() < 0)
+				itemLine.setQuantity(0);
+			ResultSet initialrs = statement.executeQuery("SELECT quantity FROM Order_details WHERE fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
+			initialrs.next();
+			int inQuant =initialrs.getInt("quantity");
+			int diff = inQuant - itemLine.getQuantity();
+			statement.executeUpdate("UPDATE Items SET quant_in_stock=quant_in_stock+" + diff + " WHERE item_ID=" + itemLine.getItemID());
+			statement.executeUpdate("UPDATE Order_details SET quantity=" + itemLine.getQuantity() + " where fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());		
+			statement.executeUpdate("UPDATE Order_details SET total_price=" + 
+					"quantity*(SELECT price FROM Items WHERE item_ID=" + itemLine.getItemID() + ") WHERE fk_order_ID=" + itemLine.getID() +  " AND fk_item_ID=" + itemLine.getItemID());
+			statement.executeUpdate("UPDATE Orders SET total_cost=(SELECT SUM(total_price) from Order_details WHERE fk_order_ID=" + itemLine.getID() + ") WHERE order_ID=" + itemLine.getID());
+			ResultSet results = statement.executeQuery("SELECT quantity FROM Order_details WHERE fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
+			results.next();
+			int newQuant = results.getInt("quantity");
+			if (newQuant<=0)
+				delItem(itemLine);
+		}catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
 	public Itemline delItem(Itemline itemLine) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
@@ -154,21 +206,7 @@ public class OrderDaoMysql implements Dao<Order>{
 		return null;
 	}
 	
-	public Itemline changeQuant(Itemline itemLine) {
-		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
-				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("UPDATE Order_details SET quantity=" + itemLine.getQuantity() + " where fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
-			ResultSet results = statement.executeQuery("SELECT quantity FROM Order_details WHERE where fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
-			results.next();
-			int newQuant = results.getInt("quantity");
-			if (newQuant<=0)
-				delItem(itemLine);
-		}catch (Exception e) {
-			LOGGER.debug(e.getStackTrace());
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
+	
 
 	/**
 	 * Deletes a item in the database

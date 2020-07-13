@@ -1,11 +1,13 @@
 package com.qa.ims.controller;
 import com.qa.ims.utils.Utils;
+
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.qa.ims.persistence.dao.OrderDaoMysql;
 import com.qa.ims.persistence.domain.Itemline;
-import com.qa.ims.persistence.domain.Order;
-import com.qa.ims.services.OrderUpdateServices;
+import com.qa.ims.persistence.domain.OrderLine;
 
 public class OrderUpdateController {
 	
@@ -30,6 +32,15 @@ public class OrderUpdateController {
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
 		updateServices.addItem(itemLine);
 		LOGGER.info("Item added to order");
+	}
+	
+	public void readAll() {
+		LOGGER.info("Please enter an order ID");
+		long order_iD = Long.parseLong(getInput());
+		List <OrderLine> order = updateServices.readAllitems(order_iD);
+		for (OrderLine line: order) {
+			LOGGER.info(line.toString());
+		}
 	}
 	
 	public void del() {

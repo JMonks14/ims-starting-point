@@ -21,11 +21,9 @@ import com.qa.ims.persistence.dao.CustomerDaoMysql;
 import com.qa.ims.persistence.dao.ItemDoaMysql;
 import com.qa.ims.persistence.dao.OrderDaoMysql;
 import com.qa.ims.persistence.domain.Domain;
-import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.services.CustomerServices;
 import com.qa.ims.services.ItemServices;
 import com.qa.ims.services.OrderServices;
-import com.qa.ims.services.OrderUpdateServices;
 import com.qa.ims.utils.Utils;
 
 public class Ims {
@@ -49,7 +47,7 @@ public class Ims {
 		OrderOption option=null;
 		Action action=null;		
 		
-		if (domain.equals(Domain.ORDERITEMS)) {
+		if (domain.equals(Domain.CONTENTS)) {
 			OrderOption.printOrderOptions();
 			option = OrderOption.getOption();
 		} else {
@@ -72,7 +70,7 @@ public class Ims {
 			OrderController orderController = new OrderController(new OrderServices(new OrderDaoMysql(username, password)));
 			doAction(orderController, action);
 			break;
-		case ORDERITEMS:
+		case CONTENTS:
 			OrderUpdateController updateControl = new OrderUpdateController(new OrderDaoMysql(username, password));
 			doOption(updateControl, option);
 		case STOP:
@@ -106,14 +104,17 @@ public class Ims {
 	
 	public void doOption(OrderUpdateController updateControl, OrderOption option) {
 		switch(option) {
-		case ADDITEM:
+		case CREATE:
 			updateControl.add();
 			break;
-		case DELITEM:
+		case DELETE:
 			updateControl.del();
 			break;
-		case CHANGE:
+		case UPDATE:
 			updateControl.change();
+			break;
+		case READ:
+			updateControl.readAll();
 			break;
 					
 		}

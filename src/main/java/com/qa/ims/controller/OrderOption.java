@@ -6,7 +6,8 @@ import com.qa.ims.utils.Utils;
 
 public enum OrderOption {
 
-	ADDITEM("Add an item to an order"), DELITEM("Delete an item form an order"), CHANGE("Change the quantity of an item in an order");
+	CREATE("Add an item to an order"), DELETE("Delete an item form an order"), UPDATE("Change the quantity of an item in an order"), 
+	READ("Display a list of all items in an order");
 	
 	public static final Logger LOGGER = Logger.getLogger(OrderOption.class);
 
