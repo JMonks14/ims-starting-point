@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.services.CrudServices;
 import com.qa.ims.utils.Utils;
 
 public class OrderController implements CrudController<Order>{
 	
-public static final Logger LOGGER = Logger.getLogger(CustomerController.class);
+public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	
 	private CrudServices<Order> orderService;
 	
@@ -19,7 +18,6 @@ public static final Logger LOGGER = Logger.getLogger(CustomerController.class);
 		this.orderService = orderService;
 	}
 	
-
 	String getInput() {
 		return Utils.getInput();
 	}
@@ -44,7 +42,7 @@ public static final Logger LOGGER = Logger.getLogger(CustomerController.class);
 		LOGGER.info("Please a customer ID");
 		long cust_iD = Long.parseLong(getInput());	
 		Order order = orderService.create(new Order(cust_iD));
-		LOGGER.info("Item created");
+		LOGGER.info("Order created");
 		return order;
 	}
 
@@ -53,14 +51,15 @@ public static final Logger LOGGER = Logger.getLogger(CustomerController.class);
 	 */
 	@Override
 	public Order update() {
-		LOGGER.info("Please enter the id of the order you would like to update");
-		Long id = Long.valueOf(getInput());
-		LOGGER.info("Please enter a customer ID");
-		long cust_iD = Long.parseLong(getInput());
-		Order order = orderService.update(new Order(id, cust_iD));
-		LOGGER.info("Item Updated");
+		LOGGER.info("Please a the ID of the order you would like to update the customer for");
+		long Id = Long.parseLong(getInput());
+		LOGGER.info("Please a customer ID");
+		long custID = Long.parseLong(getInput());
+		Order order = orderService.update(new Order(Id, custID));
+		LOGGER.info("Order Updated");
 		return order;
 	}
+
 
 	/**
 	 * Deletes an existing customer by the id of the customer

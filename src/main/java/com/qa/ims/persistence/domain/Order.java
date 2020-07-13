@@ -1,13 +1,10 @@
 package com.qa.ims.persistence.domain;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Order {
 	
 	private long ID;
 	private long cust_ID;
 	private double cost;
-	private Map<Long, Integer> ordercontents = new HashMap<>();
 	
 	public Order(long cust_ID) {
 		super();
@@ -25,6 +22,10 @@ public class Order {
 		super();
 		ID = iD;
 		this.cust_ID = cust_ID;
+	}
+
+	public Order() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public long getID() {
@@ -51,10 +52,10 @@ public class Order {
 		this.cost = cost;
 	}
 	
-	public void addItem(long iD, int quantity) {
-		ordercontents.put(iD, quantity);
+	@Override
+	public String toString() {
+		return "Order ID: " + this.getID() + ", Customer Id: " + this.getCust_ID() + ", Cost: " + this.getCost();
 	}
-	
 	
 
 }

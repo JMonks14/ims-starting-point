@@ -14,11 +14,18 @@ import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.controller.ItemController;
+import com.qa.ims.controller.OrderController;
+import com.qa.ims.controller.OrderOption;
+import com.qa.ims.controller.OrderUpdateController;
 import com.qa.ims.persistence.dao.CustomerDaoMysql;
 import com.qa.ims.persistence.dao.ItemDoaMysql;
+import com.qa.ims.persistence.dao.OrderDaoMysql;
 import com.qa.ims.persistence.domain.Domain;
+import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.services.CustomerServices;
 import com.qa.ims.services.ItemServices;
+import com.qa.ims.services.OrderServices;
+import com.qa.ims.services.OrderUpdateServices;
 import com.qa.ims.utils.Utils;
 
 public class Ims {
@@ -38,9 +45,18 @@ public class Ims {
 
 		Domain domain = Domain.getDomain();
 		LOGGER.info("What would you like to do with " + domain.name().toLowerCase() + ":");
-
-		Action.printActions();
-		Action action = Action.getAction();
+		
+		OrderOption option=null;
+		Action action=null;		
+		
+		if (domain.equals(Domain.ORDERITEMS)) {
+			OrderOption.printOrderOptions();
+			option = OrderOption.getOption();
+		} else {
+			Action.printActions();
+		    action = Action.getAction();
+		}
+			
 
 		switch (domain) {
 		case CUSTOMER:
@@ -53,7 +69,12 @@ public class Ims {
 			doAction(itemController, action);
 			break;
 		case ORDER:
+			OrderController orderController = new OrderController(new OrderServices(new OrderDaoMysql(username, password)));
+			doAction(orderController, action);
 			break;
+		case ORDERITEMS:
+			OrderUpdateController updateControl = new OrderUpdateController(new OrderDaoMysql(username, password));
+			doOption(updateControl, option);
 		case STOP:
 			break;
 		default:
@@ -80,6 +101,21 @@ public class Ims {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	public void doOption(OrderUpdateController updateControl, OrderOption option) {
+		switch(option) {
+		case ADDITEM:
+			updateControl.add();
+			break;
+		case DELITEM:
+			updateControl.del();
+			break;
+		case CHANGE:
+			updateControl.change();
+			break;
+					
 		}
 	}
 
