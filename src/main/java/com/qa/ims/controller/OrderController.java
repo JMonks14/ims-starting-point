@@ -40,7 +40,7 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	@Override
 	public Order create() {
 		LOGGER.info("Please a customer ID");
-		long cust_iD = Long.parseLong(getInput());	
+		long cust_iD = Utils.getValidId();	
 		Order order = orderService.create(new Order(cust_iD));
 		LOGGER.info("Order created");
 		return order;
@@ -52,7 +52,7 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	@Override
 	public Order update() {
 		LOGGER.info("Please a the ID of the order you would like to update the customer for");
-		long Id = Long.parseLong(getInput());
+		long Id = Utils.getValidId();
 		LOGGER.info("Please a customer ID");
 		long custID = Long.parseLong(getInput());
 		Order order = orderService.update(new Order(Id, custID));
@@ -67,7 +67,7 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	@Override
 	public void delete() {
 		LOGGER.info("Please enter the id of the order you would like to delete");
-		Long id = Long.valueOf(getInput());
+		Long id = Utils.getValidId();
 		orderService.delete(id);
 		LOGGER.info("Order deleted");
 	}

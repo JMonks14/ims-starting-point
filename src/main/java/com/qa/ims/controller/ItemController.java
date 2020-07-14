@@ -57,7 +57,7 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	@Override
 	public Item update() {
 		LOGGER.info("Please enter the id of the item you would like to update");
-		Long id = Long.valueOf(getInput());
+		Long id = Utils.getValidId();
 		LOGGER.info("Please enter an item name");
 		String name = getInput();
 		LOGGER.info("Please enter a price");
@@ -75,7 +75,7 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	@Override
 	public void delete() {
 		LOGGER.info("Please enter the id of the item you would like to delete");
-		Long id = Long.valueOf(getInput());
+		Long id = Utils.getValidId();
 		itemService.delete(id);
 		LOGGER.info("Item deleted");
 	}

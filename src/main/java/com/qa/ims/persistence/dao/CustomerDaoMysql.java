@@ -142,6 +142,7 @@ public class CustomerDaoMysql implements Dao<Customer> {
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("UPDATE Orders SET fk_cust_ID=0 WHERE fk_cust_ID = " + id);			
 			statement.executeUpdate("delete from Customers where cust_ID = " + id);
+			LOGGER.info("Customer deleted");
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());

@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.services.CrudServices;
+import com.qa.ims.utils.IllegalValueException;
 import com.qa.ims.utils.Utils;
 
 /**
@@ -53,7 +54,7 @@ public class CustomerController implements CrudController<Customer>{
 		LOGGER.info("Please enter a password");
 		String password = getInput();		
 		Customer customer = customerService.create(new Customer(firstName, surname, username, password));
-		LOGGER.info("Customer created");
+		LOGGER.info("Created customer: " + customer.toString());
 		return customer;
 	}
 
@@ -63,7 +64,7 @@ public class CustomerController implements CrudController<Customer>{
 	@Override
 	public Customer update() {
 		LOGGER.info("Please enter the id of the customer you would like to update");
-		Long id = Long.valueOf(getInput());
+		Long id = Utils.getValidId();
 		LOGGER.info("Please enter a first name");
 		String firstName = getInput();
 		LOGGER.info("Please enter a surname");
@@ -73,7 +74,7 @@ public class CustomerController implements CrudController<Customer>{
 		LOGGER.info("Please enter a password");
 		String password = getInput();
 		Customer customer = customerService.update(new Customer(id, firstName, surname, username, password));
-		LOGGER.info("Customer Updated");
+		LOGGER.info("Updated customer: " + customer.toString());
 		return customer;
 	}
 
@@ -83,9 +84,9 @@ public class CustomerController implements CrudController<Customer>{
 	@Override
 	public void delete() {
 		LOGGER.info("Please enter the id of the customer you would like to delete");
-		Long id = Long.valueOf(getInput());
+		Long id = Utils.getValidId();
 		customerService.delete(id);
-		LOGGER.info("Customer deleted");
+		
 	}
 	
 }

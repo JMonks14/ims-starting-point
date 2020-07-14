@@ -24,9 +24,9 @@ public class OrderUpdateController {
 	
 	public void add() {
 		LOGGER.info("Please enter an order ID");
-		long order_iD = Long.parseLong(getInput());
+		long order_iD = Utils.getValidId();
 		LOGGER.info("Please enter an item ID");
-		long item_id = Long.parseLong(getInput());
+		long item_id = Utils.getValidId();
 		LOGGER.info("Please enter the quantity to add to the order");
 		int quantity = Integer.parseInt(getInput());
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
@@ -56,10 +56,10 @@ public class OrderUpdateController {
 	public void change() {
 		
 		LOGGER.info("Please enter an order ID");
-		long order_iD = Long.parseLong(getInput());
+		long order_iD = Utils.getValidId();
 		LOGGER.info("Please enter an item ID");
-		long item_id = Long.parseLong(getInput());
-		LOGGER.info("Please enter the new item quanity for the order");
+		long item_id = Utils.getValidId();
+		LOGGER.info("Please enter the new item quantity for the order");
 		int quantity = Integer.parseInt(getInput());
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
 		updateServices.changeQuant(itemLine);
