@@ -30,7 +30,8 @@ public class OrderUpdateController {
 		LOGGER.info("Please enter the quantity to add to the order");
 		int quantity = Integer.parseInt(getInput());
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
-		updateServices.addItem(itemLine);
+		Itemline itemLineV = updateServices.checkQuant(itemLine); 
+		updateServices.addItem(itemLineV);
 		LOGGER.info("Item added to order");
 	}
 	
