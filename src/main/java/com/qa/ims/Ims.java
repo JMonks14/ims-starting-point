@@ -20,6 +20,7 @@ import com.qa.ims.controller.OrderUpdateController;
 import com.qa.ims.persistence.dao.CustomerDaoMysql;
 import com.qa.ims.persistence.dao.ItemDoaMysql;
 import com.qa.ims.persistence.dao.OrderDaoMysql;
+import com.qa.ims.persistence.domain.Continue;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.services.CustomerServices;
 import com.qa.ims.services.ItemServices;
@@ -37,12 +38,15 @@ public class Ims {
 		String password = Utils.getInput();
 
 		init(username, password);
+		Domain domain;
+		do { 
 
 		LOGGER.info("Which entity would you like to use?");
 		Domain.printDomains();
 
-		Domain domain = Domain.getDomain();
-		LOGGER.info("What would you like to do with " + domain.name().toLowerCase() + ":");
+		domain = Domain.getDomain();
+		if (!(domain.equals(Domain.STOP)))
+			LOGGER.info("What would you like to do with " + domain.name().toLowerCase() + ":");
 		
 		OrderOption option=null;
 		Action action=null;		
@@ -50,6 +54,9 @@ public class Ims {
 		if (domain.equals(Domain.CONTENTS)) {
 			OrderOption.printOrderOptions();
 			option = OrderOption.getOption();
+		} else if (domain.equals(Domain.STOP)) {
+				
+				
 		} else {
 			Action.printActions();
 		    action = Action.getAction();
@@ -78,7 +85,16 @@ public class Ims {
 		default:
 			break;
 		}
+		if (!(domain.equals(Domain.STOP))) {
+		LOGGER.info("\nWould you like to continue?");
+		Continue.print();
+		Continue cont = Continue.getOption();
+		
+		if (cont.equals(Continue.NO))
+			domain = Domain.STOP;
+		}
 
+	} while (!(domain.equals(Domain.STOP)));
 	}
 
 	public void doAction(CrudController<?> crudController, Action action) {
@@ -119,6 +135,7 @@ public class Ims {
 					
 		}
 	}
+	
 
 	/**
 	 * To initialise the database schema. DatabaseConnectionUrl will default to
