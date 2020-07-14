@@ -51,6 +51,7 @@ public class ItemDoaMysql implements Dao<Item> {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("select * from Items");) {
 			ArrayList<Item> items = new ArrayList<>();
+			resultSet.next();
 			while (resultSet.next()) {
 				items.add(itemFromResultSet(resultSet));
 			}
@@ -137,6 +138,7 @@ public class ItemDoaMysql implements Dao<Item> {
 	public void delete(long id) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
+			statement.execute("UPDATE Order_details SET fk_item_ID=0 WHERE fk_item_ID=" + id);
 			statement.executeUpdate("delete from Items where item_ID = " + id);
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());

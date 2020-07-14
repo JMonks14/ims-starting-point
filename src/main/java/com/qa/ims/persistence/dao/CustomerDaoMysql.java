@@ -53,6 +53,7 @@ public class CustomerDaoMysql implements Dao<Customer> {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("select * from Customers");) {
 			ArrayList<Customer> customers = new ArrayList<>();
+			resultSet.next();
 			while (resultSet.next()) {
 				customers.add(customerFromResultSet(resultSet));
 			}
@@ -139,6 +140,7 @@ public class CustomerDaoMysql implements Dao<Customer> {
 	public void delete(long id) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("UPDATE Orders SET fk_cust_ID=0 WHERE fk_cust_ID = " + id);			
 			statement.executeUpdate("delete from Customers where cust_ID = " + id);
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());

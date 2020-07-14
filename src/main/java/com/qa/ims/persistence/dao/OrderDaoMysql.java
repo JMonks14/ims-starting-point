@@ -62,6 +62,7 @@ public class OrderDaoMysql implements Dao<Order>{
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID;");) {
 			ArrayList<Order> orders = new ArrayList<>();
+			resultSet.next();
 			while (resultSet.next()) {
 				orders.add(orderFromResultSet(resultSet));
 			}
@@ -217,6 +218,7 @@ public class OrderDaoMysql implements Dao<Order>{
 	public void delete(long id) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("UPDATE Order_details SET fk_order_ID=0 WHERE fk_order_ID=" + id);
 			statement.executeUpdate("delete from Orders where order_ID = " + id);
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
