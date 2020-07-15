@@ -20,29 +20,31 @@ public class CustomerServicesTest {
 	@InjectMocks
 	private CustomerServices customerServices;
 	
+	
 	@Test
 	public void customerServicesCreate() {
-		Customer customer = new Customer("chris", "perrins");
-		customerServices.create(customer);
+		Customer customer = new Customer("chris", "perrins", "chrisP", "password1");
+		customerDao.create(customer);
 		Mockito.verify(customerDao, Mockito.times(1)).create(customer);
 	}
 	
-//	@Test
-//	public void customerServicesRead() {
-//		customerServices.readAll();
-//		Mockito.verify(customerDao, Mockito.times(1)).readAll();
-//	}
+	@Test
+	public void customerServicesRead() {
+		customerServices.readAll();
+		Mockito.verify(customerDao, Mockito.times(1)).readAll();
+	}
 	
-//	@Test
-//	public void customerServicesUpdate() {
-//		Customer customer = new Customer("chris", "perrins");
-//		customerServices.update(customer);
-//		Mockito.verify(customerDao, Mockito.times(1)).update(customer);
-//	}
+	@Test
+	public void customerServicesUpdate() {
+		Customer customer = new Customer("chris", "perrins","chrisP2","password2");
+		customerServices.update(customer);
+		Mockito.verify(customerDao, Mockito.times(1)).update(customer);
+	}
 	
-//	@Test
-//	public void customerServicesDelete() {
-//		customerServices.delete(1L);;
-//		Mockito.verify(customerDao, Mockito.times(1)).delete(1L);
-//	}
+	@Test
+	public void customerServicesDelete() {
+		Customer chris = new Customer(20L,"chris", "perrins", "chrisP", "password1");
+		customerServices.delete(chris.getId());
+		Mockito.verify(customerDao, Mockito.times(1)).delete(chris.getId());
+	}
 }
