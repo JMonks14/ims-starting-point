@@ -22,7 +22,15 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	String getInput() {
 		return Utils.getInput();
 	}
-	
+	long getValidId() {
+		return Utils.getValidId();
+	}
+	Double getDouble() {
+		return Double.parseDouble(getInput());
+	}
+	int getInt() {
+		return Integer.parseInt(getInput());
+	}
 	/**
 	 * Reads all customers to the logger
 	 */
@@ -43,11 +51,11 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 		LOGGER.info("Please enter an item name");
 		String name = getInput();
 		LOGGER.info("Please enter a price");
-		double price = Double.parseDouble(getInput());
+		double price = getDouble();
 		LOGGER.info("Please enter a stock quantity");
-		int quant_in_stock = Integer.parseInt(getInput());		
+		int quant_in_stock = getInt();
 		Item item = itemService.create(new Item(name, price, quant_in_stock));
-		LOGGER.info("Item created");
+		LOGGER.info("Item created: " + item.toString());
 		return item;
 	}
 
@@ -57,13 +65,13 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	@Override
 	public Item update() {
 		LOGGER.info("Please enter the id of the item you would like to update");
-		Long id = Utils.getValidId();
+		Long id = getValidId();
 		LOGGER.info("Please enter an item name");
 		String name = getInput();
 		LOGGER.info("Please enter a price");
-		double price = Double.parseDouble(getInput());
+		double price = getDouble();
 		LOGGER.info("Please enter a stock quantity");
-		int quant_in_stock = Integer.parseInt(getInput());		
+		int quant_in_stock = getInt();		
 		Item item = itemService.update(new Item(id, name, price, quant_in_stock));
 		LOGGER.info("Item Updated");
 		return item;
@@ -75,7 +83,7 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	@Override
 	public void delete() {
 		LOGGER.info("Please enter the id of the item you would like to delete");
-		Long id = Utils.getValidId();
+		Long id = getValidId();
 		itemService.delete(id);
 		LOGGER.info("Item deleted");
 	}

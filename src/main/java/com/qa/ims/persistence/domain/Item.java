@@ -54,5 +54,21 @@ public class Item {
 	public String toString() {
 		return "ID:" + this.getItem_ID() + ", Name:" + this.getItem_name() + ", Price:" + this.getItem_price() + ", Quantity in stock:" + this.getQuant_in_stock(); 
 	}
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item item = (Item) obj;
+		if (this.item_ID!=item.getItem_ID() || this.getItem_name()!= item.getItem_name() || this.getItem_price()!= item.getItem_price() || this.getQuant_in_stock()!=item.getQuant_in_stock()) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
 
 }

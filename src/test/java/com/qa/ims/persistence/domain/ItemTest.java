@@ -42,6 +42,12 @@ public class ItemTest {
 		String toString = "ID:1, Name:Magic rock, Price:10.0, Quantity in stock:10";
 		assertEquals(toString, item.toString());
 	}
+	
+	@Test public void equalsTest() {
+		Item item2 = new Item(1L, "Magic rock", 10.00, 10);
+		assertTrue(item.equals(item2));
+		assertFalse(other.equals(item2));
+	}
 
 
 }
