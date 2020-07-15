@@ -22,49 +22,63 @@ public class OrderUpdateController {
 		return Utils.getInput();
 	}
 	
-	public void add() {
-		LOGGER.info("Please enter an order ID");
-		long order_iD = Utils.getValidId();
-		LOGGER.info("Please enter an item ID");
-		long item_id = Utils.getValidId();
-		LOGGER.info("Please enter the quantity to add to the order");
-		int quantity = Integer.parseInt(getInput());
-		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
-		Itemline itemLineV = updateServices.checkQuant(itemLine); 
-		updateServices.addItem(itemLineV);
-		LOGGER.info("Item added to order");
+	long getValidId() {
+		return Utils.getValidId();
 	}
 	
-	public void readAll() {
+	long getLong() {
+		return Long.parseLong(getInput());
+	}
+	
+	int getInt() {
+		return Integer.parseInt(getInput());
+	}
+	
+	public Itemline add() {
 		LOGGER.info("Please enter an order ID");
-		long order_iD = Long.parseLong(getInput());
+		long order_iD = getValidId();
+		LOGGER.info("Please enter an item ID");
+		long item_id = getValidId();
+		LOGGER.info("Please enter the quantity to add to the order");
+		int quantity = getInt();
+		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
+		Itemline itemLineV = updateServices.checkQuant(itemLine); 
+		Itemline line=updateServices.addItem(itemLineV);
+		LOGGER.info("Item added to order");
+		return line;
+	}
+	
+	public List<OrderLine> readAll() {
+		LOGGER.info("Please enter an order ID");
+		long order_iD = getLong();
 		List <OrderLine> order = updateServices.readAllitems(order_iD);
 		for (OrderLine line: order) {
 			LOGGER.info(line.toString());
 		}
+	return order;
 	}
-	
 	public void del() {
 		LOGGER.info("Please enter an order ID");
-		long order_iD = Long.parseLong(getInput());
+		long order_iD = getLong();
 		LOGGER.info("Please enter an item ID");
-		long item_id = Long.parseLong(getInput());
+		long item_id = getLong();
 		Itemline itemLine = new Itemline(order_iD, item_id);
 		updateServices.delItem(itemLine);
 		LOGGER.info("Item removed from order");
 	}
 	
-	public void change() {
+	public Itemline change() {
 		
 		LOGGER.info("Please enter an order ID");
-		long order_iD = Utils.getValidId();
+		long order_iD = getValidId();
 		LOGGER.info("Please enter an item ID");
-		long item_id = Utils.getValidId();
+		long item_id = getValidId();
 		LOGGER.info("Please enter the new item quantity for the order");
-		int quantity = Integer.parseInt(getInput());
+		int quantity = getInt();
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
 		updateServices.changeQuant(itemLine);
 		LOGGER.info("Quantity updated");
+		return itemLine;
 	}
 	
 //	public Order newCust() {
