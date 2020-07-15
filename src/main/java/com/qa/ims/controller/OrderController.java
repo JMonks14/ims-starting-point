@@ -22,6 +22,17 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 		return Utils.getInput();
 	}
 	
+	long getValidId () {
+		return Utils.getValidId();
+	}
+	
+	double getDouble() {
+		return Double.parseDouble(getInput());
+	}
+	
+	long getLong() {
+		return Long.parseLong(getInput());
+	}
 	/**
 	 * Reads all customers to the logger
 	 */
@@ -40,7 +51,7 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	@Override
 	public Order create() {
 		LOGGER.info("Please a customer ID");
-		long cust_iD = Utils.getValidId();	
+		long cust_iD = getValidId();	
 		Order order = orderService.create(new Order(cust_iD));
 		LOGGER.info("Order created");
 		return order;
@@ -52,9 +63,9 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	@Override
 	public Order update() {
 		LOGGER.info("Please a the ID of the order you would like to update the customer for");
-		long Id = Utils.getValidId();
+		long Id = getValidId();
 		LOGGER.info("Please a customer ID");
-		long custID = Long.parseLong(getInput());
+		long custID = getLong();
 		Order order = orderService.update(new Order(Id, custID));
 		LOGGER.info("Order Updated");
 		return order;
@@ -67,7 +78,7 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	@Override
 	public void delete() {
 		LOGGER.info("Please enter the id of the order you would like to delete");
-		Long id = Utils.getValidId();
+		Long id = getValidId();
 		orderService.delete(id);
 		LOGGER.info("Order deleted");
 	}

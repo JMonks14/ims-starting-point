@@ -54,10 +54,10 @@ public class OrderTest {
 		assertEquals(toString, other3.toString());
 	}
 //	
-//	@Test public void equalsTest() {
-//		Item item2 = new Item(1L, "Magic rock", 10.00, 10);
-//		assertTrue(item.equals(item2));
-//		assertFalse(other.equals(item2));
-//	}
+	@Test public void equalsTest() {
+		Order order2=new Order(2L, 2L);
+		assertTrue(other.equals(order2));
+		assertFalse(other.equals(other3));
+	}
 
 }

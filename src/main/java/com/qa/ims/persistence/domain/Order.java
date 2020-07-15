@@ -84,5 +84,20 @@ public class Order {
 		return "Order ID: " + this.getID() + ", Customer Id: " + this.getCust_ID() + ", Customer Name: "+ this.getCustFirstName() + " " + this.getCustLastName()  + ", Cost: " + this.getCost();
 	}
 	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order order = (Order) obj;
+		if (this.getID()!=order.getID() || this.getCust_ID()!= order.getCust_ID() || this.getCustFirstName()!= order.getCustFirstName() || this.getCustLastName()!=order.getCustLastName() || this.getCost()!=order.getCost()) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
 
 }
