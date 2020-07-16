@@ -20,7 +20,7 @@ import com.qa.ims.controller.OrderUpdateController;
 import com.qa.ims.persistence.dao.CustomerDaoMysql;
 import com.qa.ims.persistence.dao.ItemDoaMysql;
 import com.qa.ims.persistence.dao.OrderDaoMysql;
-import com.qa.ims.persistence.domain.Continue;
+import com.qa.ims.persistence.domain.Continuer;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.services.CustomerServices;
 import com.qa.ims.services.ItemServices;
@@ -87,10 +87,10 @@ public class Ims {
 		}
 		if (!(domain.equals(Domain.STOP))) {
 		LOGGER.info("\nWould you like to continue?");
-		Continue.print();
-		Continue cont = Continue.getOption();
+		Continuer.print();
+		Continuer cont = Continuer.getOption();
 		
-		if (cont.equals(Continue.NO))
+		if (cont.equals(Continuer.NO))
 			domain = Domain.STOP;
 		}
 

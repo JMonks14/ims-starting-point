@@ -123,10 +123,8 @@ public class OrderDaoMysql implements Dao<Order>{
 	public List<OrderLine> readAllitems(long orderId) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT i.item_ID, i.item_name, od.quantity, od.total_price " + 
-						"FROM Order_details od join Items i on i.item_ID=od.fk_item_ID " + 
-						"WHERE od.fk_order_ID=" + orderId);) {
-			ArrayList<OrderLine> order = new ArrayList<>();
+				ResultSet resultSet = statement.executeQuery("SELECT i.item_ID, i.item_name, od.quantity, od.total_price FROM Order_details od join Items i on i.item_ID=od.fk_item_ID WHERE od.fk_order_ID=" + orderId);) {
+			List<OrderLine> order = new ArrayList<>();
 			while (resultSet.next()) {
 				order.add(orderLineFromResultSet(resultSet));
 			}
@@ -169,10 +167,10 @@ public class OrderDaoMysql implements Dao<Order>{
 		return null;
 	}
 
-	public Order readOrder(Long id) {
+	public Order readOrder(Order order) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM Items where order_ID = " + id);) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID where o.order_ID = " + order.getID());) {
 			resultSet.next();
 			return orderFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -193,8 +191,8 @@ public class OrderDaoMysql implements Dao<Order>{
 	public Order update(Order order) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("UPDATE Orders SET fk_cust_ID=" + order.getCust_ID() + " WHERE order_ID" + order.getID());
-			return readOrder(order.getID());
+			statement.executeUpdate("UPDATE Orders SET fk_cust_ID=" + order.getCust_ID() + " WHERE order_ID=" + order.getID());
+			return readOrder(order);
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
@@ -258,13 +256,14 @@ public class OrderDaoMysql implements Dao<Order>{
 			int newQuant = results.getInt("quantity");
 			if (newQuant<=0)
 				delItem(itemLine);
+			return itemLine;
 		}catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
 		}
 		return null;
 	}
-	public Itemline delItem(Itemline itemLine) {
+	public void delItem(Itemline itemLine) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("DELETE FROM Order_details WHERE fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
@@ -272,7 +271,7 @@ public class OrderDaoMysql implements Dao<Order>{
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
 		}
-		return null;
+		
 	}
 	
 	

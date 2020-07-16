@@ -92,7 +92,7 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order order = (Order) obj;
-		if (this.getID()!=order.getID() || this.getCust_ID()!= order.getCust_ID() || this.getCustFirstName()!= order.getCustFirstName() || this.getCustLastName()!=order.getCustLastName() || this.getCost()!=order.getCost()) {
+		if (!(this.getID()==order.getID() && this.getCust_ID()== order.getCust_ID() && this.getCost()==order.getCost())) {
 			return false;
 		} else {
 			return true;

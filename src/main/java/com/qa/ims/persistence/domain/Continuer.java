@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.qa.ims.utils.Utils;
 
-public enum Continue {
+public enum Continuer {
 	
 	YES("Return to the first menu"), NO("Stop the application");
 	
@@ -12,7 +12,7 @@ public enum Continue {
 	
 	public static final Logger LOGGER = Logger.getLogger(Domain.class);
 
-	Continue(String description) {
+	Continuer(String description) {
 		this.description=description;
 	}
 
@@ -21,16 +21,16 @@ public enum Continue {
 	}
 	
 	public static void print() {
-		for (Continue option : Continue.values()) {
+		for (Continuer option : Continuer.values()) {
 			LOGGER.info(option.getDescription());
 		}
 	}
 	
-	public static Continue getOption() {
-		Continue option;
+	public static Continuer getOption() {
+		Continuer option;
 		while (true) {
 			try {
-				option = Continue.valueOf(Utils.getInput().toUpperCase());
+				option = Continuer.valueOf(Utils.getInput().toUpperCase());
 				break;
 			} catch (IllegalArgumentException e) {
 				LOGGER.error("Invalid selection please try again");

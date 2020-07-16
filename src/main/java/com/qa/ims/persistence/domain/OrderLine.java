@@ -79,7 +79,21 @@ public class OrderLine {
 		this.itemID = itemID;
 	}
 
-
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderLine itemLine = (OrderLine) obj;
+		if (!(this.getItemID()==itemLine.getItemID() && this.getQuantity() == itemLine.getQuantity() && this.getCost() == this.getCost())) {
+			return false;
+		} else {
+			return true;
+		}
+		
+	}
 
 	@Override
 	public String toString() {

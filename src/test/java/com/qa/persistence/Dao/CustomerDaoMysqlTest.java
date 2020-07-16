@@ -110,7 +110,9 @@ public class CustomerDaoMysqlTest {
 
 			try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ims_test?serverTimezone=UTC", "root", "root");
 					Statement statement = connection.createStatement();) {
+				statement.executeUpdate("drop table Order_details");
 				statement.executeUpdate("drop table Orders");
+				statement.executeUpdate("drop table Items");
 				statement.executeUpdate("drop table Customers");
 			} catch (Exception e) {
 				LOGGER.debug(e.getStackTrace());

@@ -130,7 +130,7 @@ public class ItemDaoMysqlTest {
 				statement.executeUpdate("drop table Order_details");
 				statement.executeUpdate("drop table Orders");
 				statement.executeUpdate("drop table Items");
-				
+				statement.executeUpdate("drop table Customers");
 			} catch (Exception e) {
 				LOGGER.debug(e.getStackTrace());
 				LOGGER.error(e.getMessage());
