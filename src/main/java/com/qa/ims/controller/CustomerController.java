@@ -56,7 +56,6 @@ public class CustomerController implements CrudController<Customer>{
 		LOGGER.info("Please enter a password");
 		String password = getInput();		
 		Customer customer = customerService.create(new Customer(firstName, surname, username, password));
-		LOGGER.info("Created customer: " + customer.toString());
 		return customer;
 	}
 
@@ -77,7 +76,6 @@ public class CustomerController implements CrudController<Customer>{
 		LOGGER.info("Please enter a password");
 		String password = getInput();
 		Customer customer = customerService.update(new Customer(id, firstName, surname, username, password));
-		LOGGER.info("Updated customer: " + customer.toString());
 		return customer;
 	}
 

@@ -43,7 +43,8 @@ public class OrderDaoMysqlTest {
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/ims_test?serverTimezone=UTC", "root", "root");
 			Statement statement = connection.createStatement();
-			statement.executeUpdate("INSERT INTO Customers (first_name, last_name, username, password) VALUES('nolongerexists','nolongerexists','nolongerexists','nolongerexists')");
+			statement.executeUpdate("INSERT INTO Customers (first_name, last_name, username, password)" + ""
+					+ " VALUES('nolongerexists','nolongerexists','nolongerexists','nolongerexists')");
 			statement.executeUpdate("Update Customers set cust_ID=0");
 			statement.executeUpdate("INSERT INTO Orders (fk_cust_ID, total_cost) VALUES(0,0)");
 			statement.executeUpdate("Update Orders set order_ID=0");
@@ -99,10 +100,7 @@ public class OrderDaoMysqlTest {
 			assertEquals(order, orderDaoMysql.create(order));
 			assertEquals(order2, orderDaoMysql.create(order2));
 			assertEquals(order3, orderDaoMysql.create(order3));
-		}
-		
-		
-		
+		}		
 		@Test
 		public void cReadAllTest() {
 			OrderDaoMysql orderDaoMysql = new OrderDaoMysql(
@@ -126,7 +124,6 @@ public class OrderDaoMysqlTest {
 			orders.add(order);
 			orders.add(order2);
 			orders.add(order3);
-
 			assertEquals(orders, orderDaoMysql.readAll());
 		}
 		@Test

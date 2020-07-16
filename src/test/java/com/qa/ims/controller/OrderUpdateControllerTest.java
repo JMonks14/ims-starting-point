@@ -19,7 +19,6 @@ import com.qa.ims.persistence.domain.OrderLine;
 import com.qa.ims.services.OrderServices;
 
 @RunWith(MockitoJUnitRunner.class)
-
 public class OrderUpdateControllerTest {
 	
 	
@@ -37,10 +36,8 @@ public class OrderUpdateControllerTest {
 	@Spy // for the methods in customerController
 	@InjectMocks // for any classes our customerController calls (in this case customerService)
 	private OrderUpdateController updateController;
-
 	@Test
 	public void readAllTest() {
-//		OrderUpdateController updateController = new OrderUpdateController(updateService);
 		List<OrderLine> order = new ArrayList<>();
 		long orderID = 1;
 		Mockito.doReturn(orderID).when(updateController).getLong();
@@ -50,7 +47,6 @@ public class OrderUpdateControllerTest {
 		Mockito.when(updateService.readAllitems(orderID)).thenReturn(order);
 		assertEquals(order, updateController.readAll());
 	}
-
 	@Test
 	public void createTest() {
 		long order_id=1;
@@ -65,10 +61,6 @@ public class OrderUpdateControllerTest {
 		Itemline checkLine = updateController.add();
 		assertEquals(savedLine, checkLine);
 	}
-////
-////	/**
-////	 *
-////	 */
 	@Test
 	public void updateTest() {
 		long order_id=1;
@@ -78,7 +70,6 @@ public class OrderUpdateControllerTest {
 		Mockito.doReturn(quantity).when(updateController).getInt();
 		Itemline itemLine = new Itemline(order_id, item_id, quantity);
 		Itemline savedLine = new Itemline(1,1,1);
-//		Mockito.when(updateService.checkQuant(itemLine)).thenReturn(itemLine);
 		Mockito.when(updateService.changeQuant(itemLine)).thenReturn(savedLine);
 		Itemline checkLine = updateController.change();
 		assertEquals(savedLine, checkLine);

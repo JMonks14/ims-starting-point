@@ -55,12 +55,11 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 		LOGGER.info("Please enter a stock quantity");
 		int quant_in_stock = getInt();
 		Item item = itemService.create(new Item(name, price, quant_in_stock));
-		LOGGER.info("Item created: " + item.toString());
 		return item;
 	}
 
 	/**
-	 * Updates an existing customer by taking in user input
+	 * Updates an existing item by taking in user input
 	 */
 	@Override
 	public Item update() {
@@ -73,19 +72,17 @@ public static final Logger LOGGER = Logger.getLogger(ItemController.class);
 		LOGGER.info("Please enter a stock quantity");
 		int quant_in_stock = getInt();		
 		Item item = itemService.update(new Item(id, name, price, quant_in_stock));
-		LOGGER.info("Item Updated");
 		return item;
 	}
 
 	/**
-	 * Deletes an existing customer by the id of the customer
+	 * Deletes an existing item by the id of the customer
 	 */
 	@Override
 	public void delete() {
 		LOGGER.info("Please enter the id of the item you would like to delete");
 		Long id = getValidId();
 		itemService.delete(id);
-		LOGGER.info("Item deleted");
 	}
 
 }

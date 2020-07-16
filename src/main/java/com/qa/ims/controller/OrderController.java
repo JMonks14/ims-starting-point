@@ -46,19 +46,18 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 	}
 
 	/**
-	 * Creates a customer by taking in user input
+	 * Creates an order by taking in user input
 	 */
 	@Override
 	public Order create() {
 		LOGGER.info("Please a customer ID");
 		long cust_iD = getValidId();	
 		Order order = orderService.create(new Order(cust_iD));
-		LOGGER.info("Order created");
 		return order;
 	}
 
 	/**
-	 * Updates an existing customer by taking in user input
+	 * Updates an order by taking in user input
 	 */
 	@Override
 	public Order update() {
@@ -67,11 +66,8 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 		LOGGER.info("Please a customer ID");
 		long custID = getLong();
 		Order order = orderService.update(new Order(Id, custID));
-		LOGGER.info("Order Updated");
 		return order;
 	}
-
-
 	/**
 	 * Deletes an existing customer by the id of the customer
 	 */
@@ -80,7 +76,6 @@ public static final Logger LOGGER = Logger.getLogger(OrderController.class);
 		LOGGER.info("Please enter the id of the order you would like to delete");
 		Long id = getValidId();
 		orderService.delete(id);
-		LOGGER.info("Order deleted");
 	}
 
 }

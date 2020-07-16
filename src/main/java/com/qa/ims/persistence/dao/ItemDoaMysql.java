@@ -87,6 +87,7 @@ public class ItemDoaMysql implements Dao<Item> {
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("insert into Items(item_name, quant_in_stock, price) values('" + item.getItem_name()
 					+ "','" + item.getQuant_in_stock() + "','" + item.getItem_price() + "')");
+			LOGGER.info("Item created: " + readLatest().toString());
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -121,6 +122,7 @@ public class ItemDoaMysql implements Dao<Item> {
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("UPDATE Items SET item_name='" + item.getItem_name() + "', quant_in_stock=" + item.getQuant_in_stock() + 
 					", price=" + item.getItem_price() + " where item_ID=" + item.getItem_ID());
+			LOGGER.info("Item Updated: " + readItem(item.getItem_ID()).toString());
 			return readItem(item.getItem_ID());
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -140,6 +142,7 @@ public class ItemDoaMysql implements Dao<Item> {
 				Statement statement = connection.createStatement();) {
 			statement.execute("UPDATE Order_details SET fk_item_ID=0 WHERE fk_item_ID=" + id);
 			statement.executeUpdate("delete from Items where item_ID = " + id);
+			LOGGER.info("Item deleted");
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());

@@ -123,7 +123,8 @@ public class OrderDaoMysql implements Dao<Order>{
 	public List<OrderLine> readAllitems(long orderId) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT i.item_ID, i.item_name, od.quantity, od.total_price FROM Order_details od join Items i on i.item_ID=od.fk_item_ID WHERE od.fk_order_ID=" + orderId);) {
+				ResultSet resultSet = statement.executeQuery("SELECT i.item_ID, i.item_name, od.quantity, od.total_price" + 
+						" FROM Order_details od join Items i on i.item_ID=od.fk_item_ID WHERE od.fk_order_ID=" + orderId);) {
 			List<OrderLine> order = new ArrayList<>();
 			while (resultSet.next()) {
 				order.add(orderLineFromResultSet(resultSet));
@@ -139,7 +140,8 @@ public class OrderDaoMysql implements Dao<Order>{
 	public Order readLatest() {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID ORDER BY order_ID DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost " +
+						"FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID ORDER BY order_ID DESC LIMIT 1");) {
 			resultSet.next();
 			return orderFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -159,6 +161,7 @@ public class OrderDaoMysql implements Dao<Order>{
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("insert into Orders(fk_cust_ID) values (" + order.getCust_ID() + ")");
+			LOGGER.info("Order created: " + readLatest().toString());
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -170,7 +173,8 @@ public class OrderDaoMysql implements Dao<Order>{
 	public Order readOrder(Order order) {
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID where o.order_ID = " + order.getID());) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.order_ID, o.fk_cust_ID, c.first_name, c.last_name, o.total_cost" +
+						" FROM Orders o JOIN Customers c on c.cust_ID=o.fk_cust_ID where o.order_ID = " + order.getID());) {
 			resultSet.next();
 			return orderFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -192,6 +196,7 @@ public class OrderDaoMysql implements Dao<Order>{
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("UPDATE Orders SET fk_cust_ID=" + order.getCust_ID() + " WHERE order_ID=" + order.getID());
+			LOGGER.info("Order Updated: " + readOrder(order));
 			return readOrder(order);
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -211,8 +216,11 @@ public class OrderDaoMysql implements Dao<Order>{
 			ResultSet results = statement.executeQuery("SELECT quantity FROM Order_details WHERE fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
 			results.next();
 			int newQuant = results.getInt("quantity");
-			if (newQuant<=0)
-				delItem(itemLine);
+			if (newQuant<=0) {
+				delItem(itemLine);}
+			else {
+				LOGGER.info("Item added to order");
+			}
 			return itemLine;
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -236,16 +244,16 @@ public class OrderDaoMysql implements Dao<Order>{
 			int available=inQuant+stockQuant;
 			do  {	
 			   if (checkDiff > stockQuant) {
-					LOGGER.info("Sorry, there is only " + inQuant + " of that item in stock currently, please enter a value no greater than " + available);
+					LOGGER.info("Sorry, there is only " + stockQuant + " of that item in stock currently, please enter a value no greater than " + available);
 					itemLine.setQuantity(Integer.parseInt(Utils.getInput()));
 					}
-			   if (checkDiff <= 0) {
+			   if (itemLine.getQuantity() < 0) {
 						LOGGER.info("Please enter a number equal to 0 or greater");
 						itemLine.setQuantity(Integer.parseInt(Utils.getInput()));
 			   }
 			   diff = inQuant - itemLine.getQuantity();
 			   checkDiff = diff*-1;
-			} while (checkDiff > stockQuant || checkDiff <0);
+			} while (checkDiff > stockQuant || itemLine.getQuantity() <0);
 			statement.executeUpdate("UPDATE Items SET quant_in_stock=quant_in_stock+" + diff + " WHERE item_ID=" + itemLine.getItemID());
 			statement.executeUpdate("UPDATE Order_details SET quantity=" + itemLine.getQuantity() + " where fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());		
 			statement.executeUpdate("UPDATE Order_details SET total_price=" + 
@@ -256,6 +264,7 @@ public class OrderDaoMysql implements Dao<Order>{
 			int newQuant = results.getInt("quantity");
 			if (newQuant<=0)
 				delItem(itemLine);
+			LOGGER.info("Quantity updated");
 			return itemLine;
 		}catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -267,6 +276,7 @@ public class OrderDaoMysql implements Dao<Order>{
 		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("DELETE FROM Order_details WHERE fk_item_ID=" + itemLine.getItemID() + " AND fk_order_ID=" + itemLine.getID());
+			LOGGER.info("Item removed from order");
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
@@ -287,6 +297,7 @@ public class OrderDaoMysql implements Dao<Order>{
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("UPDATE Order_details SET fk_order_ID=0 WHERE fk_order_ID=" + id);
 			statement.executeUpdate("delete from Orders where order_ID = " + id);
+			LOGGER.info("Order deleted");
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());

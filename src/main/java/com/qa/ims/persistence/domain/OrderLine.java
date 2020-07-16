@@ -16,8 +16,6 @@ public class OrderLine {
 		this.cost = cost;
 	}
 	
-	
-
 	public OrderLine(long itemID, String itemName, int quantity, double cost) {
 		super();
 		this.itemID = itemID;
@@ -25,8 +23,6 @@ public class OrderLine {
 		this.quantity = quantity;
 		this.cost = cost;
 	}
-
-
 
 	public OrderLine(String itemName, int quantity, double cost) {
 		super();
@@ -97,7 +93,8 @@ public class OrderLine {
 
 	@Override
 	public String toString() {
-		return "Item ID: " + this.getItemID() + ", Item name: " + this.getItemName() + ", Quantity: " + this.getQuantity() + ", Total cost: " + this.getCost();
+		return "Item ID: " + this.getItemID() + ", Item name: " + this.getItemName() + 
+				", Quantity: " + this.getQuantity() + ", Total cost: " + this.getCost();
 	}
 
 }

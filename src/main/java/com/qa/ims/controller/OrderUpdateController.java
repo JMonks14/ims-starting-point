@@ -44,8 +44,7 @@ public class OrderUpdateController {
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
 		Itemline itemLineV = updateServices.checkQuant(itemLine); 
 		Itemline line=updateServices.addItem(itemLineV);
-		LOGGER.info("Item added to order");
-		return line;
+	    return line;
 	}
 	
 	public List<OrderLine> readAll() {
@@ -64,8 +63,7 @@ public class OrderUpdateController {
 		long item_id = getLong();
 		Itemline itemLine = new Itemline(order_iD, item_id);
 		updateServices.delItem(itemLine);
-		LOGGER.info("Item removed from order");
-	}
+		}
 	
 	public Itemline change() {
 		
@@ -77,7 +75,6 @@ public class OrderUpdateController {
 		int quantity = getInt();
 		Itemline itemLine= new Itemline(order_iD, item_id, quantity);
 		updateServices.changeQuant(itemLine);
-		LOGGER.info("Quantity updated");
 		return itemLine;
 	}
 	

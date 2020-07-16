@@ -8,7 +8,7 @@ public enum Domain {
 
 	CUSTOMER("Information about customers"),
 	ITEM("Individual Items"),
-	ORDER("Purchases of items"),
+	ORDER("Purchases of items: to assign to a customer"),
 	CONTENTS("Add, remove or edit the quantity of items in an order"),
 	STOP("To close the application");
 	

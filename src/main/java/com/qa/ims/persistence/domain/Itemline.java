@@ -13,9 +13,6 @@ public class Itemline {
 		this.quantity = quantity;
 	}
 	
-	
-
-
 	public Itemline(long ID, long itemID) {
 		this.ID=ID;
 		this.itemID=itemID;
