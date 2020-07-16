@@ -39,7 +39,8 @@ public class CustomerDaoMysql implements Dao<Customer> {
 		String surname = resultSet.getString("last_name");
 		String username = resultSet.getString("username");
 		String password = resultSet.getNString("password");
-		return new Customer(id, firstName, surname, username, password);
+		Customer customer = new Customer(id, firstName, surname, username, password);
+		return customer;
 	}
 
 	/**
@@ -77,6 +78,18 @@ public class CustomerDaoMysql implements Dao<Customer> {
 		}
 		return null;
 	}
+	public Customer readCustomer(Customer cust) {
+		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM Customers where cust_ID=" + cust.getId());) {
+			resultSet.next();
+			return customerFromResultSet(resultSet);
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
 
 	/**
 	 * Creates a customer in the database
@@ -97,18 +110,6 @@ public class CustomerDaoMysql implements Dao<Customer> {
 		return null;
 	}
 
-	public Customer readCustomer(Long id) {
-		try (Connection connection = DriverManager.getConnection(jdbcConnectionUrl, username, password);
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM Customers where cust_ID = " + id);) {
-			resultSet.next();
-			return customerFromResultSet(resultSet);
-		} catch (Exception e) {
-			LOGGER.debug(e.getStackTrace());
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
 
 	/**
 	 * Updates a customer in the database
@@ -123,7 +124,8 @@ public class CustomerDaoMysql implements Dao<Customer> {
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("update Customers set first_name ='" + customer.getFirstName() + "', last_name ='"
 					+ customer.getSurname() + "', username ='" + customer.getUsername() + "', password='" + customer.getPassword() + "' where cust_ID =" + customer.getId());
-			return readCustomer(customer.getId());
+			Customer customer2 = readCustomer(customer);
+			return customer2;
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
