@@ -63,7 +63,7 @@ public class Item {
 		if (getClass() != obj.getClass())
 			return false;
 		Item item = (Item) obj;
-		if (this.item_ID!=item.getItem_ID() || this.getItem_name()!= item.getItem_name() || this.getItem_price()!= item.getItem_price() || this.getQuant_in_stock()!=item.getQuant_in_stock()) {
+		if (!((this.getItem_ID() == item.getItem_ID()) && (this.getItem_name()).equals(item.getItem_name()) && (this.getItem_price() == item.getItem_price()) && (this.getQuant_in_stock()==item.getQuant_in_stock()))) {
 			return false;
 		} else {
 			return true;
