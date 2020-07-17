@@ -1,15 +1,26 @@
-Coverage: 34%
-# Project Title
+Inventory management system 
+written by James Monks
 
-One Paragraph of project description goes here
+This application allows the user to view and make changes to a database containing customers, orders and items. They may view all customers in the system as well as adding new ones or removing or updating existing ones.
+Likewise they may view, create, update and delete items as well as orders. They may create orders, assign them to a customer, view all orders, update which customer they belong to, view the items in an order; add, delete or update
+the quantity of an item in an an order.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Please note: to run this application you will need to have Java installed on your computer. See https://www.java.com/en/download/help/windows_manual_download.xml#download for details of how 
+to install java if you do not have it already installed.
 
+To use this application you will need the following files present on your machine:
+JamesMonks-20Junsoftware1.jar
+JamesMonks-20Junsoftware1-jar-with-dependencies.jar
+
+these can be found at 
+
+To run the application use first use Command prompt to navigate to the directory containing the above jar files by entering cd filepath/ e.g. if on the desktop enter cd Desktop/
+Next enter the command java -jar JamesMonks-20Junsoftware1-jar-with-dependencies.jar
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To 
 
 ```
 Give examples
