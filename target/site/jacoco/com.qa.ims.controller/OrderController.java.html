@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JamesMonks-20Junsoftware1</a> &gt; <a href="index.source.html" class="el_package">com.qa.ims.controller</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package com.qa.ims.controller;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.qa.ims.persistence.domain.Order;
+import com.qa.ims.services.CrudServices;
+import com.qa.ims.utils.Utils;
+
+public class OrderController implements CrudController&lt;Order&gt;{
+	
+<span class="fc" id="L13">public static final Logger LOGGER = Logger.getLogger(OrderController.class);</span>
+	
+	private CrudServices&lt;Order&gt; orderService;
+	
+<span class="fc" id="L17">	public OrderController(CrudServices&lt;Order&gt; orderService) {</span>
+<span class="fc" id="L18">		this.orderService = orderService;</span>
+<span class="fc" id="L19">	}</span>
+	
+	String getInput() {
+<span class="nc" id="L22">		return Utils.getInput();</span>
+	}
+	
+	long getValidId () {
+<span class="nc" id="L26">		return Utils.getValidId();</span>
+	}
+	
+	double getDouble() {
+<span class="nc" id="L30">		return Double.parseDouble(getInput());</span>
+	}
+	
+	long getLong() {
+<span class="nc" id="L34">		return Long.parseLong(getInput());</span>
+	}
+	/**
+	 * Reads all customers to the logger
+	 */
+	@Override
+	public List&lt;Order&gt; readAll() {
+<span class="fc" id="L41">		List&lt;Order&gt; orders = orderService.readAll();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">		for(Order order: orders) {</span>
+<span class="fc" id="L43">			LOGGER.info(order.toString());</span>
+		}
+<span class="fc" id="L45">		return orders;</span>
+	}
+
+	/**
+	 * Creates an order by taking in user input
+	 */
+	@Override
+	public Order create() {
+<span class="fc" id="L53">		LOGGER.info(&quot;Please a customer ID&quot;);</span>
+<span class="fc" id="L54">		long cust_iD = getValidId();	</span>
+<span class="fc" id="L55">		Order order = orderService.create(new Order(cust_iD));</span>
+<span class="fc" id="L56">		return order;</span>
+	}
+
+	/**
+	 * Updates an order by taking in user input
+	 */
+	@Override
+	public Order update() {
+<span class="fc" id="L64">		LOGGER.info(&quot;Please a the ID of the order you would like to update the customer for&quot;);</span>
+<span class="fc" id="L65">		long Id = getValidId();</span>
+<span class="fc" id="L66">		LOGGER.info(&quot;Please a customer ID&quot;);</span>
+<span class="fc" id="L67">		long custID = getLong();</span>
+<span class="fc" id="L68">		Order order = orderService.update(new Order(Id, custID));</span>
+<span class="fc" id="L69">		return order;</span>
+	}
+	/**
+	 * Deletes an existing customer by the id of the customer
+	 */
+	@Override
+	public void delete() {
+<span class="fc" id="L76">		LOGGER.info(&quot;Please enter the id of the order you would like to delete&quot;);</span>
+<span class="fc" id="L77">		Long id = getValidId();</span>
+<span class="fc" id="L78">		orderService.delete(id);</span>
+<span class="fc" id="L79">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

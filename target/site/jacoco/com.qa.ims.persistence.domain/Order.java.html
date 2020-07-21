@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Order.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JamesMonks-20Junsoftware1</a> &gt; <a href="index.source.html" class="el_package">com.qa.ims.persistence.domain</a> &gt; <span class="el_source">Order.java</span></div><h1>Order.java</h1><pre class="source lang-java linenums">package com.qa.ims.persistence.domain;
+
+public class Order {
+	
+	private long ID;
+	private long cust_ID;
+	private String custFirstName;
+	private String custLastName;
+	private double cost;
+	
+	public Order(long cust_ID) {
+<span class="fc" id="L12">		super();</span>
+<span class="fc" id="L13">		this.cust_ID = cust_ID;</span>
+<span class="fc" id="L14">	}</span>
+
+	public Order(long iD, long cust_ID, double cost) {
+<span class="fc" id="L17">		super();</span>
+<span class="fc" id="L18">		ID = iD;</span>
+<span class="fc" id="L19">		this.cust_ID = cust_ID;</span>
+<span class="fc" id="L20">		this.cost = cost;</span>
+<span class="fc" id="L21">	}</span>
+	
+	public Order(long iD, long cust_ID, String custFirstName, String custLastName, double cost) {
+<span class="fc" id="L24">		super();</span>
+<span class="fc" id="L25">		ID = iD;</span>
+<span class="fc" id="L26">		this.cust_ID = cust_ID;</span>
+<span class="fc" id="L27">		this.custFirstName = custFirstName;</span>
+<span class="fc" id="L28">		this.custLastName = custLastName;</span>
+<span class="fc" id="L29">		this.cost = cost;</span>
+<span class="fc" id="L30">	}</span>
+
+	public Order(long iD, long cust_ID) {
+<span class="fc" id="L33">		super();</span>
+<span class="fc" id="L34">		ID = iD;</span>
+<span class="fc" id="L35">		this.cust_ID = cust_ID;</span>
+<span class="fc" id="L36">	}</span>
+
+<span class="fc" id="L38">	public Order() {</span>
+		// TODO Auto-generated constructor stub
+<span class="fc" id="L40">	}</span>
+
+	public long getID() {
+<span class="fc" id="L43">		return ID;</span>
+	}
+
+	public void setID(long iD) {
+<span class="fc" id="L47">		ID = iD;</span>
+<span class="fc" id="L48">	}</span>
+
+	public long getCust_ID() {
+<span class="fc" id="L51">		return cust_ID;</span>
+	}
+
+	public void setCust_ID(long cust_ID) {
+<span class="fc" id="L55">		this.cust_ID = cust_ID;</span>
+<span class="fc" id="L56">	}</span>
+
+	public double getCost() {
+<span class="fc" id="L59">		return cost;</span>
+	}
+
+	public void setCost(double cost) {
+<span class="fc" id="L63">		this.cost = cost;</span>
+<span class="fc" id="L64">	}</span>
+	
+	public String getCustFirstName() {
+<span class="fc" id="L67">		return custFirstName;</span>
+	}
+
+	public void setCustFirstName(String custFirstName) {
+<span class="fc" id="L71">		this.custFirstName = custFirstName;</span>
+<span class="fc" id="L72">	}</span>
+
+	public String getCustLastName() {
+<span class="fc" id="L75">		return custLastName;</span>
+	}
+
+	public void setCustLastName(String custLastName) {
+<span class="fc" id="L79">		this.custLastName = custLastName;</span>
+<span class="fc" id="L80">	}</span>
+
+	@Override
+	public String toString() {
+<span class="fc" id="L84">		return &quot;Order ID: &quot; + this.getID() + &quot;, Customer Id: &quot; + this.getCust_ID() + &quot;, Customer Name: &quot;+ this.getCustFirstName() + &quot; &quot; + this.getCustLastName()  + &quot;, Cost: &quot; + this.getCost();</span>
+	}
+	
+	public boolean equals(Object obj) {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">		if (this == obj)</span>
+<span class="fc" id="L89">			return true;</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L91">			return false;</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L93">			return false;</span>
+<span class="fc" id="L94">		Order order = (Order) obj;</span>
+<span class="pc bpc" id="L95" title="2 of 6 branches missed.">		if (!(this.getID()==order.getID() &amp;&amp; this.getCust_ID()== order.getCust_ID() &amp;&amp; this.getCost()==order.getCost())) {</span>
+<span class="fc" id="L96">			return false;</span>
+		} else {
+<span class="fc" id="L98">			return true;</span>
+		}
+		
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

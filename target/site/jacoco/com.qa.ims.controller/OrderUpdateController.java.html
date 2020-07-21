@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderUpdateController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JamesMonks-20Junsoftware1</a> &gt; <a href="index.source.html" class="el_package">com.qa.ims.controller</a> &gt; <span class="el_source">OrderUpdateController.java</span></div><h1>OrderUpdateController.java</h1><pre class="source lang-java linenums">package com.qa.ims.controller;
+import com.qa.ims.utils.Utils;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import com.qa.ims.persistence.dao.OrderDaoMysql;
+import com.qa.ims.persistence.domain.Itemline;
+import com.qa.ims.persistence.domain.OrderLine;
+
+public class OrderUpdateController {
+	
+<span class="fc" id="L14">	public static final Logger LOGGER = Logger.getLogger(OrderUpdateController.class);</span>
+	private OrderDaoMysql updateServices;
+	
+<span class="fc" id="L17">	public OrderUpdateController(OrderDaoMysql updateService) {</span>
+<span class="fc" id="L18">		this.updateServices = updateService;</span>
+<span class="fc" id="L19">	}</span>
+	
+	String getInput() {
+<span class="nc" id="L22">		return Utils.getInput();</span>
+	}
+	
+	long getValidId() {
+<span class="nc" id="L26">		return Utils.getValidId();</span>
+	}
+	
+	long getLong() {
+<span class="nc" id="L30">		return Long.parseLong(getInput());</span>
+	}
+	
+	int getInt() {
+<span class="nc" id="L34">		return Integer.parseInt(getInput());</span>
+	}
+	
+	public Itemline add() {
+<span class="fc" id="L38">		LOGGER.info(&quot;Please enter an order ID&quot;);</span>
+<span class="fc" id="L39">		long order_iD = getValidId();</span>
+<span class="fc" id="L40">		LOGGER.info(&quot;Please enter an item ID&quot;);</span>
+<span class="fc" id="L41">		long item_id = getValidId();</span>
+<span class="fc" id="L42">		LOGGER.info(&quot;Please enter the quantity to add to the order&quot;);</span>
+<span class="fc" id="L43">		int quantity = getInt();</span>
+<span class="fc" id="L44">		Itemline itemLine= new Itemline(order_iD, item_id, quantity);</span>
+<span class="fc" id="L45">		Itemline itemLineV = updateServices.checkQuant(itemLine); </span>
+<span class="fc" id="L46">		Itemline line=updateServices.addItem(itemLineV);</span>
+<span class="fc" id="L47">	    return line;</span>
+	}
+	
+	public List&lt;OrderLine&gt; readAll() {
+<span class="fc" id="L51">		LOGGER.info(&quot;Please enter an order ID&quot;);</span>
+<span class="fc" id="L52">		long order_iD = getLong();</span>
+<span class="fc" id="L53">		List &lt;OrderLine&gt; order = updateServices.readAllitems(order_iD);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">		for (OrderLine line: order) {</span>
+<span class="fc" id="L55">			LOGGER.info(line.toString());</span>
+		}
+<span class="fc" id="L57">	return order;</span>
+	}
+	public void del() {
+<span class="fc" id="L60">		LOGGER.info(&quot;Please enter an order ID&quot;);</span>
+<span class="fc" id="L61">		long order_iD = getLong();</span>
+<span class="fc" id="L62">		LOGGER.info(&quot;Please enter an item ID&quot;);</span>
+<span class="fc" id="L63">		long item_id = getLong();</span>
+<span class="fc" id="L64">		Itemline itemLine = new Itemline(order_iD, item_id);</span>
+<span class="fc" id="L65">		updateServices.delItem(itemLine);</span>
+<span class="fc" id="L66">		}</span>
+	
+	public Itemline change() {
+		
+<span class="fc" id="L70">		LOGGER.info(&quot;Please enter an order ID&quot;);</span>
+<span class="fc" id="L71">		long order_iD = getValidId();</span>
+<span class="fc" id="L72">		LOGGER.info(&quot;Please enter an item ID&quot;);</span>
+<span class="fc" id="L73">		long item_id = getValidId();</span>
+<span class="fc" id="L74">		LOGGER.info(&quot;Please enter the new item quantity for the order&quot;);</span>
+<span class="fc" id="L75">		int quantity = getInt();</span>
+<span class="fc" id="L76">		Itemline itemLine= new Itemline(order_iD, item_id, quantity);</span>
+<span class="fc" id="L77">		updateServices.changeQuant(itemLine);</span>
+<span class="fc" id="L78">		return itemLine;</span>
+	}
+	
+//	public Order newCust() {
+//		LOGGER.info(&quot;Please enter an order ID&quot;);
+//		long order_iD = Long.parseLong(getInput());
+//		LOGGER.info(&quot;Please enter an customer ID&quot;);
+//		long cust_id = Long.parseLong(getInput());
+//		Order order = new Order(order_iD, cust_id);		
+//		return order;
+//	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
